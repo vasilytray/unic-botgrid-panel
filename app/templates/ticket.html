@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DokuHost - Техническая Поддержка</title>
+    <link rel="stylesheet" type="text/css" href="/static/style/ticket.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "marked": "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js"
+            }
+        }
+    </script>
+</head>
+<body class="body-ticket">
+    <header class="header-ticket">
+        <h1>DokuHost Техническая Поддержка</h1>
+        <nav class="nav-ticket" id="main-nav">
+            <button data-view="user-portal">Портал Клиента</button>
+            <button data-view="admin-panel">Панель Администратора</button>
+        </nav>
+    </header>
+
+    <main id="app-container">
+        <!-- Content will be rendered here by ticket.js -->
+    </main>
+
+    <footer>
+        <p>&copy; 2025 DokuHost. Все права защищены. </p>
+    </footer>
+
+    <script type="module" src="/static/js/ticket.js"></script>
+</body>
+</html>

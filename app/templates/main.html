@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мини-чат система</title>
+    <link rel="stylesheet" type="text/css" href="/static/style/main.css">
+</head>
+<body>
+    <!-- Верхнее меню -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">Мини-чат</div>
+            <nav class="nav">
+                {% if user_authenticated %}
+                <!-- Меню для авторизованных -->
+                <div class="user-info">
+                    <span class="user-id">UserID: {{ user.id }}</span>
+                    <span class="user-balance">Баланс: 0 руб.</span>  <!-- Заглушка -->
+                    <span class="user-name">{{ user.first_name }} {{ user.last_name }}</span>
+                    <button onclick="window.location.href='/users/profile/'">Профиль</button>
+                    <button onclick="logoutUser()">Выйти</button>
+                </div>
+                {% else %}
+                <!-- Меню для неавторизованных -->
+                <div class="auth-buttons">
+                    <button onclick="showAuthModal()">Войти</button>
+                </div>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="main">
+        <div class="container">
+            {% if user_authenticated %}
+            <!-- Контент для авторизованных -->
+            <div class="dashboard">
+                <h1>Добро пожаловать, {{ user.first_name }}!</h1>
+                <div class="user-stats">
+                    <div class="stat-card">
+                        <h3>Ваш ID</h3>
+                        <p class="stat-value">{{ user.id }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Баланс</h3>
+                        <p class="stat-value">0 руб.</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Роль</h3>
+                        <p class="stat-value">{{ user.role.role_name if user.role else 'User' }}</p>
+                    </div>
+                </div>
+                <!-- Дополнительный контент дашборда -->
+            </div>
+            {% else %}
+            <!-- Контент для неавторизованных -->
+            <div class="welcome-section">
+                <h1>Добро пожаловать в систему мини-чата!</h1>
+                <p>Для доступа к функциям системы необходимо авторизоваться.</p>
+                
+                <!-- Формы авторизации/регистрации -->
+                <div class="auth-forms">
+                    <div class="tabs">
+                        <div class="tab active" data-tab="login">Авторизация</div>
+                        <div class="tab" data-tab="registration">Регистрация</div>
+                    </div>
+                    <div class="content">
+                        <form id="login-form" class="form active">
+                            <input type="email" placeholder="Email" name="user_email" required>
+                            <input type="password" placeholder="Пароль" name="user_pass" required>
+                            <button type="submit" onclick="loginFunction(event)">Войти</button>
+                        </form>
+                        <form id="registration-form" class="form">
+                            <input type="text" placeholder="Имя" name="first_name" required>
+                            <input type="text" placeholder="Фамилия" name="last_name" required>
+                            <input type="tel" placeholder="Телефон" name="user_phone" required>
+                            <input type="email" placeholder="Email" name="user_email" required>
+                            <input type="password" placeholder="Пароль" name="user_pass" required>
+                            <input type="password" placeholder="Повторите пароль" name="user_pass_check" required>
+                            <button type="submit" onclick="regFunction(event)">Зарегистрироваться</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <script src="/static/js/script.js"></script>
+    <script>
+    // Функции для работы с интерфейсом
+    function logoutUser() {
+        fetch('/users/logout/', { method: 'POST' })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                }
+            });
+    }
+
+    // Обработка вкладок форм
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => showTab(tab.dataset.tab));
+    });
+
+    function showTab(tabName) {
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.form').forEach(form => form.classList.remove('active'));
+
+        document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+        document.getElementById(`${tabName}-form`).classList.add('active');
+    }
+    </script>
+</body>
+</html>

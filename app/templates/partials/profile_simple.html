@@ -1,0 +1,58 @@
+<!-- app/templates/partials/profile_simple.html -->
+<div class="profile-module">
+    <div class="module-header">
+        <h2>Профиль пользователя - ТЕСТ</h2>
+        <p>Это тестовая версия профиля</p>
+    </div>
+
+    <div class="profile-content">
+        <div class="profile-card">
+            <h3>Информация о пользователе:</h3>
+            <div class="user-info">
+                <p><strong>ID:</strong> {{ current_user.id }}</p>
+                <p><strong>Email:</strong> {{ current_user.email }}</p>
+                <p><strong>Имя:</strong> {{ current_user.first_name or 'Не указано' }}</p>
+                <p><strong>Фамилия:</strong> {{ current_user.last_name or 'Не указано' }}</p>
+            </div>
+        </div>
+        
+        <div class="test-actions">
+            <button class="btn-test" onclick="alert('Профиль работает!')">
+                Тестовая кнопка
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.profile-module {
+    padding: 20px;
+}
+
+.profile-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.user-info p {
+    margin: 10px 0;
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.btn-test {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-test:hover {
+    background: #2980b9;
+}
+</style>

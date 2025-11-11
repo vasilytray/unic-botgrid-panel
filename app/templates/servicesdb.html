@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления - Хостинг Провайдер</title>
+    <link rel="stylesheet" type="text/css" href="/static/style/main.css">
+</head>
+<body>
+    <!-- Верхнее меню -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">Хостинг Провайдер</div>
+            <nav class="nav">
+                <div class="user-info">
+                    <span class="user-name">{{ user.first_name }} {{ user.last_name }}</span>
+                    <span class="user-role">{{ user.role.role_name if user.role else 'User' }}</span>
+                    <button onclick="window.location.href='/'">Главная</button>
+                    <button onclick="logoutUser()">Выйти</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="main">
+        <div class="container">
+            <div class="dashboard">
+                <h1>Панель управления</h1>
+                <p>Добро пожаловать, {{ user.first_name }} {{ user.last_name }}!</p>
+                
+                <!-- Навигационное меню -->
+                <div class="nav-menu">
+                    <a href="/lk/plist">Главная</a>
+                    <a href="/lk/services">Мои сервисы</a>
+                    <a href="/lk/invoices">Счета</a>
+                    <a href="/services/">Создать сервис</a>
+                    <a href="/profile">Профиль</a>
+                </div>
+
+                <!-- Статистика -->
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <h3>Всего сервисов</h3>
+                        <div class="stat-number">{{ total_services }}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Счетов к оплате</h3>
+                        <div class="stat-number">{{ pending_invoices_count }}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Всего счетов</h3>
+                        <div class="stat-number">{{ total_invoices_count }}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Активные сервисы</h3>
+                        <div class="stat-number">{{ service_stats.by_status.get('active', 0) }}</div>
+                    </div>
+                </div>
+
+                <!-- Список сервисов -->
+                <div class="services-section">
+                    <h2>Мои сервисы</h2>
+                    {% if services %}
+                        {% for service in services %}
+                        <div class="service-item">
+                            <h3>{{ service.name }} 
+                                <span class="service-status status-{{ service.status }}">
+                                    {{ service.status }}
+                                </span>
+                            </h3>
+                            <p><strong>Тип:</strong> {{ service.service_type }}</p>
+                            <p><strong>Ресурсы:</strong> {{ service.cpu_cores }} CPU, {{ service.memory_mb }} MB RAM, {{ service.storage_gb }} GB SSD</p>
+                            {% if service.ip_address %}
+                            <p><strong>IP адрес:</strong> {{ service.ip_address }}</p>
+                            {% endif %}
+                            <p><strong>Создан:</strong> {{ service.created_at.strftime('%d.%m.%Y %H:%M') }}</p>
+                            <div class="service-actions">
+                                <button data-action="start" data-service-id="{{ service.id }}" 
+                                        {% if service.status == 'active' %}disabled{% endif %}>Запустить</button>
+                                <button data-action="stop" data-service-id="{{ service.id }}" 
+                                        {% if service.status == 'stopped' %}disabled{% endif %}>Остановить</button>
+                                <button data-action="restart" data-service-id="{{ service.id }}">Перезапустить</button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>У вас пока нет сервисов. <a href="/services/" style="color: #667eea; text-decoration: underline;">Создать первый сервис</a></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

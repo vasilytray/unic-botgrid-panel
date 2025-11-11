@@ -1,0 +1,151 @@
+<link rel="stylesheet" href="/static/style/profile-edit.css">
+
+<div class="edit-profile-page">
+    <div class="page-header">
+        <button class="btn btn-back" data-content="profile">
+            <i class="fas fa-arrow-left"></i> Назад к профилю
+        </button>
+        <h2>Редактирование основных данных</h2>
+    </div>
+
+    <div class="edit-form-container">
+        <form id="basicProfileForm" class="profile-form">
+            <div class="form-section">
+                <h3>Личная информация</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-first-name">Имя *</label>
+                        <input type="text" id="edit-first-name" name="first_name" 
+                               value="{{ current_user.first_name }}" required minlength="3" maxlength="50">
+                        <small class="form-text">От 3 до 50 символов</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-last-name">Фамилия *</label>
+                        <input type="text" id="edit-last-name" name="last_name" 
+                               value="{{ current_user.last_name }}" required minlength="3" maxlength="50">
+                        <small class="form-text">От 3 до 50 символов</small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-user-nick">Никнейм *</label>
+                    <input type="text" id="edit-user-nick" name="user_nick" 
+                           value="{{ current_user.user_nick }}" required minlength="3" maxlength="50">
+                    <small class="form-text">Только латинские буквы, цифры и подчеркивания</small>
+                    <div id="nick-availability" class="availability-status"></div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Контактная информация</h3>
+                
+                <div class="form-group">
+                    <label for="edit-secondary-email">Дополнительный email</label>
+                    <input type="email" id="edit-secondary-email" name="secondary_email" 
+                           autocomplete="email" value="{{ current_user.secondary_email or '' }}"
+                           onblur="checkSecondaryEmailAvailability(this.value)">
+                    <small class="form-text">Необязательное поле для резервной почты</small>
+                    <div id="secondary-email-availability" class="availability-status"></div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" data-content="profile">Отмена</button>
+                <button type="submit" class="btn btn-primary" data-action="save-basic-profile">Сохранить изменения</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+console.log('🔄 edit_basic_profile.html загружена');
+console.log('Проверяем доступность updateBasicProfile до загрузки profile-edit.js:', typeof updateBasicProfile);
+</script>
+
+<script src="/static/js/profile-edit.js"></script>
+
+<script>
+console.log('🔄 После загрузки profile-edit.js');
+console.log('updateBasicProfile доступна:', typeof window.updateBasicProfile);
+console.log('changePassword доступна:', typeof window.changePassword);
+
+// Инициализация специфичных обработчиков для этой страницы
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔄 DOM загружен в edit_basic_profile.html');
+    
+    const nickInput = document.getElementById('edit-user-nick');
+    const statusElement = document.getElementById('nick-availability');
+    
+    if (nickInput && statusElement) {
+        nickInput.addEventListener('blur', function() {
+            checkNicknameAvailability(this, statusElement);
+        });
+    }
+
+    const form = document.getElementById('basicProfileForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('📝 Форма отправлена, вызываем handleAction');
+            const submitButton = this.querySelector('[data-action="save-basic-profile"]');
+            if (submitButton) {
+                handleAction('save-basic-profile', submitButton, e);
+            }
+        });
+    }
+    
+    console.log('✅ Обработчики инициализированы');
+});
+
+function checkSecondaryEmailAvailability(email) {
+    const statusElement = document.getElementById('secondary-email-availability');
+    
+    if (!statusElement) return;
+    
+    // Очищаем поле или email слишком короткий
+    if (!email || email.length < 3) {
+        statusElement.innerHTML = '';
+        return;
+    }
+    
+    // Проверка формата email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        statusElement.innerHTML = '<span class="text-danger">✗ Неверный формат email</span>';
+        return;
+    }
+    
+    // Проверка на совпадение с основным email
+    const mainEmail = '{{ current_user.user_email }}';
+    if (email === mainEmail) {
+        statusElement.innerHTML = '<span class="text-danger">✗ Дополнительный email не может совпадать с основным</span>';
+        return;
+    }
+    
+    statusElement.innerHTML = '<span class="text-warning">⏳ Проверка доступности...</span>';
+    
+    // Проверка на сервере
+    fetch(`/users/check-secondary-email?email=${encodeURIComponent(email)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.available) {
+                statusElement.innerHTML = '<span class="text-success">✓ Email доступен</span>';
+            } else {
+                statusElement.innerHTML = '<span class="text-danger">✗ Email уже используется</span>';
+            }
+        })
+        .catch(error => {
+            statusElement.innerHTML = '<span class="text-warning">⚠ Ошибка проверки</span>';
+        });
+}
+
+// Очищаем статус при изменении поля
+document.getElementById('edit-secondary-email').addEventListener('input', function() {
+    const statusElement = document.getElementById('secondary-email-availability');
+    if (statusElement) {
+        statusElement.innerHTML = '';
+    }
+});
+</script>

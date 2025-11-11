@@ -1,0 +1,141 @@
+<link rel="stylesheet" href="/static/style/profile-edit.css">
+
+<div class="edit-profile-page">
+    <div class="page-header">
+        <button class="btn btn-back" data-content="profile">
+            <i class="fas fa-arrow-left"></i> Назад к профилю
+        </button>
+        <h2>Управление безопасностью</h2>
+    </div>
+
+    <div class="edit-form-container">
+        <div class="security-sections">
+            <!-- Текущий IP -->
+            <div class="security-section">
+                <h3>Текущий IP адрес</h3>
+                <div class="current-ip-info">
+                    <p><strong>Ваш IP:</strong> <span id="security-current-ip">Определяется...</span></p>
+                    <button type="button" class="btn btn-outline btn-sm" data-action="add-current-ip">
+                        <i class="fas fa-plus"></i> Добавить текущий IP
+                    </button>
+                </div>
+            </div>
+
+            <!-- Управление IP адресами -->
+            <div class="security-section">
+                <h3>Разрешенные IP адреса</h3>
+                <p class="security-info">Доступ к вашему аккаунту будет разрешен только с указанных IP адресов.</p>
+                
+                <div id="allowed-ips-list" class="ips-list">
+                    <div class="loading-ips">
+                        <i class="fas fa-spinner fa-spin"></i> Загрузка IP адресов...
+                    </div>
+                </div>
+                
+                <button type="button" class="btn btn-outline" data-action="open-add-ip-modal">
+                    <i class="fas fa-plus"></i> Добавить новый IP
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для добавления IP -->
+<div id="addIPModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>Добавить IP адрес</h4>
+            <span class="close" data-action="close-add-ip-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="addIPForm">
+                <div class="form-group">
+                    <label for="new-ip-address">IP адрес *</label>
+                    <input type="text" id="new-ip-address" name="ip_address" 
+                           placeholder="192.168.1.1" required>
+                    <small class="form-text">Пример: 192.168.1.1 или 2001:db8::1</small>
+                </div>
+                <div class="form-group">
+                    <label for="ip-description">Описание (необязательно)</label>
+                    <input type="text" id="ip-description" name="description" 
+                           placeholder="Домашний компьютер, Офис и т.д.">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" data-action="close-add-ip-modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary" data-action="add-new-ip">Добавить IP</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    initializeSecurityHandlers();
+    loadSecurityData();
+});
+
+function initializeSecurityHandlers() {
+    // Обработчик формы добавления IP
+    const ipForm = document.getElementById('addIPForm');
+    if (ipForm) {
+        ipForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitButton = this.querySelector('[data-action="add-new-ip"]');
+            if (submitButton) {
+                handleAction('add-new-ip', submitButton, e);
+            }
+        });
+    }
+}
+
+function loadSecurityData() {
+    // Загружаем текущий IP
+    fetch('/users/ip-restrictions/check')
+        .then(response => response.json())
+        .then(data => {
+            const currentIpElement = document.getElementById('security-current-ip');
+            if (currentIpElement) {
+                currentIpElement.textContent = data.ip_address;
+            }
+        })
+        .catch(error => {
+            console.error('Error loading current IP:', error);
+        });
+    
+    // Загружаем список разрешенных IP
+    loadAllowedIPs();
+}
+
+function loadAllowedIPs() {
+    fetch('/users/ip-restrictions/ips')
+        .then(response => response.json())
+        .then(ips => {
+            const ipList = document.getElementById('allowed-ips-list');
+            if (!ipList) return;
+            
+            if (ips.length === 0) {
+                ipList.innerHTML = '<p class="text-muted">Нет разрешенных IP адресов</p>';
+            } else {
+                ipList.innerHTML = ips.map(ip => `
+                    <div class="ip-item">
+                        <span class="ip-address">${ip.ip_address}</span>
+                        <span class="ip-description">${ip.description || 'Без описания'}</span>
+                        <button class="btn btn-danger btn-sm" data-action="remove-ip" data-ip="${ip.ip_address}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        })
+        .catch(error => {
+            console.error('Error loading IPs:', error);
+            const ipList = document.getElementById('allowed-ips-list');
+            if (ipList) {
+                ipList.innerHTML = '<p class="text-danger">Ошибка загрузки IP адресов</p>';
+            }
+        });
+}
+src="/static/js/profile-edit.js"
+</script>

@@ -1,0 +1,27 @@
+[
+  {
+    "major_name": "Экономика",
+    "major_description": "Здесь учат считать деньги",
+    "count_students": 0
+  },
+  {
+    "major_name": "История",
+    "major_description": "Здесь учат опыту",
+    "count_students": 0
+  },
+  {
+    "major_name": "Биология",
+    "major_description": "Здесь учат на биологов",
+    "count_students": 0
+  },
+  {
+    "major_name": "Психология",
+    "major_description": "Здесь учат понимать себя и людей",
+    "count_students": 0
+  },
+  {
+    "major_name": "Экология",
+    "major_description": "Здесь учат береч людей",
+    "count_students": 0
+  }
+]

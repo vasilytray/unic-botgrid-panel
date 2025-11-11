@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои счета - Хостинг Провайдер</title>
+    <link rel="stylesheet" type="text/css" href="/static/style/main.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">Хостинг Провайдер</div>
+            <nav class="nav">
+                <div class="user-info">
+                    <span class="user-name">{{ user.first_name }} {{ user.last_name }}</span>
+                    <button onclick="window.location.href='/lk/plist'">Назад в панель</button>
+                    <button onclick="logoutUser()">Выйти</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <h1>Мои счета</h1>
+            <p>Всего счетов: {{ invoices|length }}</p>
+            
+            {% if invoices %}
+                {% for invoice in invoices %}
+                <div class="service-item">
+                    <h3>Счет #{{ invoice.id }}</h3>
+                    <p>Сумма: {{ invoice.amount }} руб.</p>
+                    <p>Статус: {{ invoice.status }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>У вас пока нет счетов.</p>
+            {% endif %}
+        </div>
+    </main>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

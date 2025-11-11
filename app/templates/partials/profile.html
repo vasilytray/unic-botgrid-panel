@@ -1,0 +1,131 @@
+<div class="profile-container">
+    <div class="profile-header">
+        <h2>Профиль пользователя</h2>
+    </div>
+
+    <!-- Раздел быстрых действий -->
+    <div class="quick-actions-section">
+        <h3>Быстрые действия</h3>
+        <div class="quick-actions-grid">
+            <div class="quick-action-card" data-content="edit-basic-profile">
+                <div class="action-icon">
+                    <i class="fas fa-user-edit"></i>
+                </div>
+                <div class="action-content">
+                    <h4>Основные данные</h4>
+                    <p>Изменить имя, фамилию, никнейм и дополнительный email</p>
+                </div>
+            </div>
+
+            <div class="quick-action-card" data-content="edit-password">
+                <div class="action-icon">
+                    <i class="fas fa-key"></i>
+                </div>
+                <div class="action-content">
+                    <h4>Сменить пароль</h4>
+                    <p>Обновить пароль для входа в аккаунт</p>
+                </div>
+            </div>
+
+            <div class="quick-action-card" data-content="edit-security">
+                <div class="action-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="action-content">
+                    <h4>Безопасность</h4>
+                    <p>Управление IP адресами и настройками доступа</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основная информация профиля -->
+    <div class="profile-info-section">
+        <h3>Основная информация</h3>
+        <div class="info-grid">
+            <div class="info-item">
+                <label>Имя:</label>
+                <span id="profile-first-name">{{ current_user.first_name }}</span>
+            </div>
+            <div class="info-item">
+                <label>Фамилия:</label>
+                <span id="profile-last-name">{{ current_user.last_name }}</span>
+            </div>
+            <div class="info-item">
+                <label>Никнейм:</label>
+                <span id="profile-nick">{{ current_user.user_nick }}</span>
+            </div>
+            <div class="info-item">
+                <label>Email:</label>
+                <span id="profile-email">{{ current_user.user_email }}</span>
+            </div>
+            <div class="info-item">
+                <label>Телефон:</label>
+                <span id="profile-phone">{{ current_user.user_phone }}</span>
+            </div>
+            <div class="info-item">
+                <label>Доп. email:</label>
+                <span id="profile-secondary-email">{{ current_user.secondary_email or 'Не указан' }}</span>
+            </div>
+            <div class="info-item">
+                <label>Роль:</label>
+                <span id="profile-role">{{ current_user.role.role_name if current_user.role else 'Не указана' }}</span>
+            </div>
+            <div class="info-item">
+                <label>Последний вход:</label>
+                <span id="profile-last-login">{{ current_user.last_login.strftime('%d.%m.%Y %H:%M') if current_user.last_login else 'Никогда' }}</span>
+            </div>
+            <div class="info-item">
+                <label>Дата регистрации:</label>
+                <span id="profile-created-at">{{ current_user.created_at.strftime('%d.%m.%Y %H:%M') if current_user.created_at else 'Неизвестно' }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Блок IP ограничений -->
+    <div class="ip-restrictions-section">
+        <h3>Безопасность и IP ограничения</h3>
+        <div id="current-ip-info" class="ip-info">
+            <p><strong>Ваш текущий IP:</strong> <span id="current-ip">Определяется...</span></p>
+            <p><strong>Статус доступа:</strong> <span id="ip-access-status">Проверяется...</span></p>
+        </div>
+        <div class="ip-actions">
+            <button class="btn btn-outline" data-content="edit-security">
+                <i class="fas fa-shield-alt"></i> Управление IP доступом
+            </button>
+            <button class="btn btn-outline" data-action="check-ip">
+                <i class="fas fa-sync"></i> Обновить IP информацию
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Проверяем IP при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    checkCurrentIP();
+});
+
+function checkCurrentIP() {
+    fetch('/users/ip-restrictions/check')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('current-ip').textContent = data.ip_address;
+            const statusElement = document.getElementById('ip-access-status');
+            if (data.is_allowed) {
+                statusElement.textContent = '✅ Разрешен';
+                statusElement.className = 'text-success';
+            } else {
+                statusElement.textContent = '❌ Заблокирован';
+                statusElement.className = 'text-danger';
+            }
+        })
+        .catch(error => {
+            console.error('Error checking IP:', error);
+            document.getElementById('current-ip').textContent = 'Ошибка';
+            document.getElementById('ip-access-status').textContent = '❌ Ошибка проверки';
+            document.getElementById('ip-access-status').className = 'text-danger';
+        });
+}
+</script>
+

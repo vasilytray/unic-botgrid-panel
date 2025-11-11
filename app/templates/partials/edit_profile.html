@@ -1,0 +1,281 @@
+<div class="edit-profile-form">
+    <div class="form-tabs">
+        <button class="tab-btn active" data-tab="basic-tab" data-action="switch-tab">Основные данные</button>
+        <button class="tab-btn" data-tab="password-tab" data-action="switch-tab">Смена пароля</button>
+        <button class="tab-btn" data-tab="security-tab" data-action="switch-tab">Безопасность</button>
+    </div>
+
+    <!-- Вкладка основных данных -->
+    <div id="basic-tab" class="tab-content active">
+        <form id="basicProfileForm">
+            <div class="form-group">
+                <label for="edit-first-name">Имя *</label>
+                <input type="text" id="edit-first-name" name="first_name" 
+                       value="{{ current_user.first_name if current_user else '' }}" required minlength="3" maxlength="50">
+                <small class="form-text">От 3 до 50 символов</small>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-last-name">Фамилия *</label>
+                <input type="text" id="edit-last-name" name="last_name" 
+                       value="{{ current_user.last_name if current_user else '' }}" required minlength="3" maxlength="50">
+                <small class="form-text">От 3 до 50 символов</small>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-user-nick">Никнейм *</label>
+                <input type="text" id="edit-user-nick" name="user_nick" 
+                       value="{{ current_user.user_nick if current_user else '' }}" required minlength="3" maxlength="50">
+                <small class="form-text">Только латинские буквы, цифры и подчеркивания</small>
+                <div id="nick-availability" class="availability-status"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-secondary-email">Дополнительный email</label>
+                <input type="email" id="edit-secondary-email" name="secondary_email" 
+                       value="{{ current_user.secondary_email if current_user else '' }}">
+                <small class="form-text">Необязательное поле для резервной почты</small>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" data-action="close-modal">Отмена</button>
+                <button type="submit" class="btn btn-primary" data-action="save-basic-profile">Сохранить изменения</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Вкладка смены пароля -->
+    <div id="password-tab" class="tab-content">
+        <form id="passwordForm">
+            <div class="form-group">
+                <label for="current-password">Текущий пароль *</label>
+                <input type="password" id="current-password" name="current_password" required minlength="5" maxlength="50">
+            </div>
+
+            <div class="form-group">
+                <label for="new-password">Новый пароль *</label>
+                <input type="password" id="new-password" name="new_password" required minlength="5" maxlength="50">
+                <small class="form-text">От 5 до 50 символов</small>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password">Подтверждение пароля *</label>
+                <input type="password" id="confirm-password" name="confirm_password" required minlength="5" maxlength="50">
+                <div id="password-match" class="availability-status"></div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" data-action="close-modal">Отмена</button>
+                <button type="submit" class="btn btn-primary" data-action="change-password">Сменить пароль</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Вкладка безопасности -->
+    <div id="security-tab" class="tab-content">
+        <div class="security-section">
+            <h4>Управление IP доступом</h4>
+            <p class="security-info">Вы можете ограничить доступ к вашему аккаунту только с определенных IP адресов.</p>
+            
+            <div class="current-ip-section">
+                <p><strong>Ваш текущий IP:</strong> <span id="security-current-ip">Определяется...</span></p>
+                <button type="button" class="btn btn-outline btn-sm" data-action="add-current-ip">
+                    <i class="fas fa-plus"></i> Добавить текущий IP
+                </button>
+            </div>
+
+            <div class="ip-list-section">
+                <h5>Разрешенные IP адреса:</h5>
+                <div id="allowed-ips-list" class="ips-list">
+                    <p class="text-muted">Загрузка...</p>
+                </div>
+                <button type="button" class="btn btn-outline" data-action="open-add-ip-modal">
+                    <i class="fas fa-plus"></i> Добавить новый IP
+                </button>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary" data-action="close-modal">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для добавления IP -->
+<div id="addIPModal" class="modal nested-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>Добавить IP адрес</h4>
+            <span class="close" data-action="close-add-ip-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="addIPForm">
+                <div class="form-group">
+                    <label for="new-ip-address">IP адрес *</label>
+                    <input type="text" id="new-ip-address" name="ip_address" 
+                           placeholder="192.168.1.1" required>
+                    <small class="form-text">Пример: 192.168.1.1 или 2001:db8::1</small>
+                </div>
+                <div class="form-group">
+                    <label for="ip-description">Описание (необязательно)</label>
+                    <input type="text" id="ip-description" name="description" 
+                           placeholder="Домашний компьютер, Офис и т.д.">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" data-action="close-add-ip-modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary" data-action="add-new-ip">Добавить IP</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Инициализация при загрузке формы
+document.addEventListener('DOMContentLoaded', function() {
+    // Активируем вкладку из родительского окна
+    const activeTab = window.parent.activeEditTab || 'basic-tab';
+    switchTab(activeTab);
+    
+    // Инициализируем обработчики
+    initializeEditFormHandlers();
+    
+    // Загружаем данные для вкладки безопасности
+    if (activeTab === 'security-tab') {
+        loadSecurityData();
+    }
+});
+
+function switchTab(tabName) {
+    // Скрыть все вкладки
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Убрать активный класс со всех кнопок
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Показать выбранную вкладку
+    const targetTab = document.getElementById(tabName);
+    if (targetTab) {
+        targetTab.classList.add('active');
+    }
+    
+    // Активировать кнопку
+    const targetBtn = document.querySelector(`[data-tab="${tabName}"]`);
+    if (targetBtn) {
+        targetBtn.classList.add('active');
+    }
+}
+
+function initializeEditFormHandlers() {
+    // Проверка доступности никнейма
+    const nickInput = document.getElementById('edit-user-nick');
+    if (nickInput) {
+        nickInput.addEventListener('blur', checkNicknameAvailability);
+    }
+    
+    // Проверка совпадения паролей
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    if (confirmPasswordInput) {
+        confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+    }
+}
+
+function checkNicknameAvailability() {
+    const nick = this.value;
+    const statusElement = document.getElementById('nick-availability');
+    
+    if (!statusElement) return;
+    
+    if (nick.length < 3) {
+        statusElement.innerHTML = '<span class="text-warning">Минимум 3 символа</span>';
+        return;
+    }
+    
+    if (!/^[a-zA-Z0-9_]{3,50}$/.test(nick)) {
+        statusElement.innerHTML = '<span class="text-danger">Только латинские буквы, цифры и _</span>';
+        return;
+    }
+    
+    // Проверка на сервере
+    fetch(`/users/check-nickname?nick=${encodeURIComponent(nick)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.available) {
+                statusElement.innerHTML = '<span class="text-success">✓ Никнейм доступен</span>';
+            } else {
+                statusElement.innerHTML = '<span class="text-danger">✗ Никнейм уже занят</span>';
+            }
+        })
+        .catch(error => {
+            statusElement.innerHTML = '<span class="text-warning">⚠ Ошибка проверки</span>';
+        });
+}
+
+function checkPasswordMatch() {
+    const newPassword = document.getElementById('new-password')?.value || '';
+    const confirmPassword = this.value;
+    const statusElement = document.getElementById('password-match');
+    
+    if (!statusElement) return;
+    
+    if (confirmPassword && newPassword !== confirmPassword) {
+        statusElement.innerHTML = '<span class="text-danger">✗ Пароли не совпадают</span>';
+    } else if (confirmPassword && newPassword === confirmPassword) {
+        statusElement.innerHTML = '<span class="text-success">✓ Пароли совпадают</span>';
+    } else {
+        statusElement.innerHTML = '';
+    }
+}
+
+function loadSecurityData() {
+    // Загружаем текущий IP
+    fetch('/users/ip-restrictions/check')
+        .then(response => response.json())
+        .then(data => {
+            const currentIpElement = document.getElementById('security-current-ip');
+            if (currentIpElement) {
+                currentIpElement.textContent = data.ip_address;
+            }
+        })
+        .catch(error => {
+            console.error('Error loading current IP:', error);
+        });
+    
+    // Загружаем список разрешенных IP
+    loadAllowedIPs();
+}
+
+function loadAllowedIPs() {
+    fetch('/users/ip-restrictions/ips')
+        .then(response => response.json())
+        .then(ips => {
+            const ipList = document.getElementById('allowed-ips-list');
+            if (!ipList) return;
+            
+            if (ips.length === 0) {
+                ipList.innerHTML = '<p class="text-muted">Нет разрешенных IP адресов</p>';
+            } else {
+                ipList.innerHTML = ips.map(ip => `
+                    <div class="ip-item">
+                        <span class="ip-address">${ip.ip_address}</span>
+                        <span class="ip-description">${ip.description || 'Без описания'}</span>
+                        <button class="btn btn-danger btn-sm" data-action="remove-ip" data-ip="${ip.ip_address}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        })
+        .catch(error => {
+            console.error('Error loading IPs:', error);
+            const ipList = document.getElementById('allowed-ips-list');
+            if (ipList) {
+                ipList.innerHTML = '<p class="text-danger">Ошибка загрузки IP адресов</p>';
+            }
+        });
+}
+</script>

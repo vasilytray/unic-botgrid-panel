@@ -1,0 +1,659 @@
+/* app/static/style/ticket.css */
+.body-ticket {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header-ticket {
+    background-color: #004d99; /* Hosting provider blue */
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-ticket h1 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.nav-ticket button {
+    background-color: #ff9900; /* Accent color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.nav-ticket button:hover {
+    background-color: #cc7a00;
+}
+
+main {
+    flex-grow: 1;
+    padding: 20px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.tickets-container {
+    padding: 20px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+/* Forms */
+form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="email"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+form textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+form button[type="submit"], #set-user-email, #create-new-ticket, #update-status-btn, #update-priority-btn {
+    /* background-color: #00aaff; */
+    background-color: #fa5a15;
+    color: white;
+    /* padding: 10px 15px; */
+    padding: .75rem;
+    border: none;
+    border-radius: .5rem;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 1em;
+}
+
+form button[type="submit"]:hover, #set-user-email:hover, #create-new-ticket:hover, #update-status-btn:hover, #update-priority-btn:hover {
+    background-color: #e14d0b;
+    transform: translateY(-2px);
+    transition-duration: .3s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Стили для модального окна */
+.modal-overlay-ticket {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content-ticket {
+    background: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header-ticket {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-header-ticket h3 {
+    margin: 0;
+    color: #333;
+}
+
+.modal-close-ticket {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close-ticket:hover {
+    color: #333;
+    background: #f5f5f5;
+    border-radius: 4px;
+}
+
+.modal-body-ticket {
+    padding: 20px;
+}
+
+.form-group-ticket {
+    margin-bottom: 20px;
+}
+
+.form-group-ticket label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group-ticket input,
+.form-group-ticket select,
+.form-group-ticket textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.form-group-ticket textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-group-ticket small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 12px;
+}
+
+.form-actions-ticket {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .modal-content-ticket {
+        width: 95%;
+        margin: 20px;
+    }
+    
+    .form-actions-ticket {
+        flex-direction: column;
+    }
+}
+
+/* Ticket List */
+.ticket-list {
+    list-style: none;
+    padding: 0;
+}
+
+.ticket-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.ticket-item:hover {
+    background-color: #eaf3f8;
+}
+
+.ticket-item:last-child {
+    border-bottom: none;
+}
+
+/* New: layout for controls inside ticket item */
+.ticket-main-content {
+    flex-grow: 1;
+    margin-right: 15px;
+}
+
+.ticket-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Pinned ticket style */
+.pinned-ticket {
+    background-color: #e3f2fd; /* Light blue */
+    border-left: 5px solid #2196f3;
+}
+.pinned-ticket:hover {
+    background-color: #c0e0fa;
+}
+
+/* Pin button style */
+.pin-toggle-btn {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 5px;
+    line-height: 1; /* ensure emoji looks good */
+    transition: transform 0.1s;
+    margin-left: 5px;
+}
+
+.pin-toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+.status-tag {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.status-Open {
+    background-color: #fcf8e3;
+    color: #8a6d3b;
+}
+.status-InProgress {
+    background-color: #d9edf7;
+    color: #31708f;
+}
+.status-AwaitingUserResponse {
+    background-color: #f2dede;
+    color: #a94442;
+}
+.status-Closed {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+/* Ticket Detail */
+.ticket-detail h2 {
+    border-bottom: 2px solid #004d99;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.message-history {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 80%;
+}
+
+.message.user {
+    background-color: #eef9ee;
+    align-self: flex-start;
+    margin-right: auto;
+}
+
+.message-sender {
+    font-weight: 600;
+    color: #333;
+}
+
+.message-sender.user {
+    color: #28a745;
+}
+
+.message-sender.staff {
+    color: #007bff;
+}
+
+.message.staff {
+    background-color: #dff0d8;
+    align-self: flex-end;
+    margin-left: auto;
+    text-align: left; /* Keep text left aligned even for staff messages */
+}
+
+.message-sender {
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.message-item {
+    padding: 12px;
+    margin-bottom: 10px;
+    /* background: white; */
+    border-radius: 6px;
+    /* border-left: 4px solid #007bff; */
+}
+
+.message-item {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.message-item:hover {
+    border-color: #007bff;
+}
+
+.message-item:last-child {
+    margin-bottom: 0;
+}
+
+.message-item.staff-message {
+    border-right: 4px solid #007bff;
+    background: #f0f8ff;
+    width: max-content;
+}
+
+.message-item.user-message {
+    border-left: 4px solid #28a745;
+    background: #eef9ee;
+    width: max-content;
+    margin-left: auto;
+}
+
+.message-timestamp {
+    font-size: 0.7em;
+    color: #999;
+    display: block;
+    margin-top: 5px;
+    text-align: right;
+}
+
+/* New layout for User Portal */
+.two-column-portal {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.portal-left-column {
+    flex: 1 1 30%; /* Takes up 50% */
+    min-width: 300px; /* Ensure minimum size */
+}
+
+.portal-right-column {
+    flex: 1 1 70%; /* Takes up 50% */
+    overflow-y: auto;
+}
+
+/* Specific styling for the ticket detail panel in the right column */
+.ticket-history-panel {
+    min-height: 400px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Adjustments for ticket list items in the left column to indicate selection */
+.ticket-item.selected {
+    background-color: #c0e0fa; /* Light blue, distinct selection */
+    border-left: 5px solid #004d99;
+}
+.ticket-item.selected:hover {
+    background-color: #c0e0fa; 
+}
+
+/* Admin Controls specific styling */
+.admin-controls select {
+    margin-top: 5px;
+    width: auto;
+    display: inline-block;
+}
+.admin-controls button {
+    margin-left: 10px;
+}
+
+/* New: Configuration and Pagination Controls */
+.ticket-config-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap; /* Added for better mobile support */
+}
+.ticket-config-controls h3 {
+    margin: 0;
+    font-size: 1.1em;
+}
+.ticket-config-controls label {
+    margin: 0;
+    font-weight: normal;
+}
+.ticket-config-controls select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: auto;
+}
+
+.pagination-controls {
+    text-align: center;
+}
+
+.pagination-controls h3 {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+.page-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.page-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    font-size: 0.9em;
+}
+
+.page-btn:hover:not(:disabled) {
+    background-color: #ddd;
+}
+
+.page-btn.active-page {
+    background-color: #00aaff;
+    color: white;
+    border-color: #00aaff;
+}
+
+.page-btn:disabled {
+    cursor: default;
+    opacity: 0.6;
+}
+
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 10px;
+    margin-top: 20px;
+    font-size: 0.8em;
+    color: #666;
+}
+
+/* --- Responsive Design for Smartphones (Max 600px) --- */
+@media (max-width: 600px) {
+    /* General layout adjustments */
+    main {
+        padding: 10px;
+    }
+
+    /* Header adjustments */
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+    
+    header h1 {
+        margin-bottom: 10px;
+        font-size: 1.3em;
+    }
+
+    nav {
+        /* width: 100%;
+        display: flex; */
+        justify-content: space-around;
+        gap: 5px;
+    }
+    
+    nav button {
+        flex-grow: 1;
+        margin: 0; /* Remove existing margin-left */
+        padding: 8px 10px;
+        font-size: 0.9em;
+    }
+    
+    /* Ticket Items - stack elements for better viewability */
+    .ticket-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        padding: 10px;
+    }
+    
+    .ticket-main-content {
+        width: 100%;
+        margin-right: 0;
+    }
+    
+    .ticket-actions {
+        width: 100%;
+        justify-content: flex-end;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    /* Admin Controls in Detail View */
+    .admin-controls > div {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .admin-controls > div > div {
+        width: 100%;
+    }
+    
+    .admin-controls select, .admin-controls button {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 5px;
+        box-sizing: border-box; 
+    }
+    
+    /* Form buttons stacking */
+    form button {
+        width: 100%;
+        box-sizing: border-box;
+        margin-left: 0 !important; /* Override inline/default margin */
+    }
+    
+    #cancel-ticket-creation {
+        margin-top: 10px !important;
+    }
+    
+    form button[type="submit"], #set-user-email, #create-new-ticket, #update-status-btn, #update-priority-btn {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Message history smaller padding */
+    .message {
+        padding: 8px;
+        max-width: 95%; 
+    }
+    
+    /* Input/Form width consistency */
+    form input[type="text"],
+    form input[type="email"],
+    form select,
+    form textarea {
+        box-sizing: border-box;
+    }
+
+    /* New Config controls stacking */
+    .ticket-config-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    .ticket-config-controls select {
+        width: 100%;
+        margin-left: 0;
+    }
+    
+    /* Split Portal View adjustments */
+    .two-column-portal {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    
+    .portal-left-column,
+    .portal-right-column {
+        flex: 1 1 100%; /* Full width stack */
+        min-width: unset;
+    }
+    
+    .ticket-history-panel {
+        min-height: 200px; /* Smaller default height on mobile */
+    }
+}

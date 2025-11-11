@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Partials</title>
+    <script src="/static/js/script.js"></script>
+</head>
+<body>
+    <h1>Тестирование Partial Pages</h1>
+    
+    <button onclick="testPartial('/partials/test')">Test /partials/test</button>
+    <button onclick="testPartial('/partials/profile')">Test /partials/profile</button>
+    <button onclick="testPartial('/partials/profile-simple')">Test /partials/profile-simple</button>
+    
+    <div id="result" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;"></div>
+    
+    <script>
+    async function testPartial(url) {
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `Тестируем: ${url}...`;
+        
+        try {
+            const response = await fetch(url, {
+                credentials: 'include',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            
+            const text = await response.text();
+            resultDiv.innerHTML = `
+                <h3>Результат для ${url}:</h3>
+                <p>Статус: ${response.status} ${response.statusText}</p>
+                <p>Длина: ${text.length} символов</p>
+                <pre>${escapeHtml(text.substring(0, 500))}...</pre>
+            `;
+        } catch (error) {
+            resultDiv.innerHTML = `
+                <h3>Ошибка для ${url}:</h3>
+                <p>${error.message}</p>
+            `;
+        }
+    }
+    
+    function escapeHtml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+    </script>
+</body>
+</html>

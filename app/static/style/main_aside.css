@@ -1,0 +1,208 @@
+/* Боковое меню */
+.sidebar-nav {
+    padding: 20px;
+}
+
+.nav-section {
+    margin-bottom: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border: 1px solid #f0f0f0;
+    overflow: hidden;
+}
+
+.nav-section:first-child {
+    margin-bottom: 25px;
+}
+
+.nav-section-title {
+    font-size: 13px;
+    color: #6c757d;
+    text-transform: uppercase;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px 12px 20px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background: #fafbfc;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.nav-list {
+    list-style: none;
+    padding: 8px 0;
+}
+
+.nav-item {
+    margin-bottom: 0;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    color: #26325c;
+    opacity: 0.75;
+    text-decoration: none;
+    border-radius: 0;
+    transition: all 0.3s ease;
+    justify-content: flex-start;
+    text-align: left;
+    border: none;
+    margin: 0;
+    position: relative;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background-color 0.3s ease;
+}
+
+.nav-link:hover::before {
+    background: #EB5E28;
+}
+
+.nav-link i {
+    color: #9f9f9f;
+    transition: color 0.3s ease;
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.nav-link:hover {
+    background-color: #f8f9fa;
+    color: #26325c;
+    opacity: 1;
+}
+
+.nav-link:hover i {
+    color: #EB5E28;
+}
+
+.nav-link.create-new {
+    color: #27ae60;
+    font-weight: 500;
+    opacity: 0.75;
+}
+
+.nav-link.create-new:hover {
+    opacity: 1;
+    background-color: #f0f9f0;
+}
+
+.nav-link.create-new i {
+    color: #27ae60;
+}
+
+.nav-text {
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+    text-align: left;
+    transition: opacity 0.3s ease;
+}
+
+.badge {
+    background: #6c757d;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    margin-left: auto;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+}
+
+.badge-warning {
+    background: #f39c12;
+}
+
+/* Активный пункт меню */
+.nav-link.active {
+    background-color: transparent;
+    color: #26325c;
+    opacity: 1;
+}
+
+.nav-link.active::before {
+    background: #EB5E28;
+}
+
+.nav-link.active i {
+    color: #EB5E28;
+    opacity: 1;
+}
+
+.nav-link.active .badge {
+    background: #EB5E28;
+    color: white;
+}
+
+.nav-link.active .nav-text {
+    opacity: 1;
+    font-weight: 600;
+}
+
+/* Убираем отступы у последнего элемента в списке */
+.nav-list .nav-item:last-child .nav-link {
+    border-bottom: none;
+}
+
+/* Адаптивность - убираем блоки на мобильных */
+@media (max-width: 1024px) {
+    .nav-section {
+        background: transparent;
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+        margin-bottom: 30px;
+    }
+    
+    .nav-section:first-child {
+        margin-bottom: 30px;
+    }
+    
+    .nav-section-title {
+        background: transparent;
+        border-bottom: none;
+        padding: 0 0 15px 0;
+    }
+    
+    .nav-list {
+        padding: 0;
+    }
+    
+    .nav-link {
+        border-radius: 8px;
+        padding: 10px 15px;
+        margin-bottom: 5px;
+    }
+    
+    .nav-link::before {
+        display: none;
+    }
+    
+    .nav-link.active {
+        background-color: #3498db;
+        color: white;
+    }
+    
+    .nav-link.active i {
+        color: white;
+    }
+}

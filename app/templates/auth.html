@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хостинг Портал: Вход и Регистрация</title>
+    <link rel="stylesheet" type="text/css" href="/static/style/auth.css">
+</head>
+<body>
+<div class="container">
+    <!-- Блок для авторизованных пользователей (скрыт по умолчанию) -->
+    <div id="auth-user-info" style="display: none;">
+        <div class="auth-info">
+            <h3>Вы уже авторизованы</h3>
+            <p>Перенаправление на страницу профиля...</p>
+            <button onclick="redirectToProfile()">Перейти в профиль</button>
+            <button onclick="logoutUser()">Выйти</button>
+        </div>
+    </div>
+    <div id="auth-forms">
+        <div class="tabs">
+            <div class="tab active" data-tab="login">Авторизация</div>
+            <div class="tab" data-tab="registration">Регистрация</div>
+        </div>
+        <div class="content">
+            <form id="login-form" class="form active">
+                <input type="email" id="user_email" placeholder="Email" name="user_email" required>
+                <input type="password" id="user_pass" placeholder="Пароль" name="user_pass" required>
+                <button type="submit" id="login-button" class="submit-button">Войти</button>
+            </form>
+            <form id="registration-form" class="form">
+                <input autocomplete="off" type="text" placeholder="Имя" id="first_name" name="first_name" required>
+                <input autocomplete="off" type="text" placeholder="Фамилия" id="last_name" name="last_name" required>
+                <input autocomplete="off" type="email" placeholder="Email" id="user_email" name="user_email" required>
+                <input autocomplete="on" type="tel" placeholder="Телефон" id="user_phone" name="user_phone" required>
+                <input type="password" placeholder="Пароль" id="user_pass" name="user_pass" required>
+                <input type="password" placeholder="Повторите пароль" id="user_pass_check" name="user_pass_check" required>
+                <button type="submit" id="reg-button" class="submit-button">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+    
+</div>
+
+<!-- <script src="/static/js/auth.js"></script> -->
+<script src="/static/js/script.js"></script>
+</body>
+</html>

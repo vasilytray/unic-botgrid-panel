@@ -1,0 +1,17 @@
+fastapi[all]==0.118.0
+pydantic==2.11.9
+pydantic-settings==2.11.0
+jinja2==3.1.6
+SQLAlchemy==2.0.43
+asyncpg==0.30.0
+alembic==1.16.5
+loguru==0.7.3
+uvicorn==0.37.0
+httpx==0.28.1
+python-jose
+bcrypt==4.0.1
+libpass==1.9.2
+websockets==15.0.1
+celery==5.5.3
+redis==7.0.1
+flower==2.0.1  # для мониторинга

@@ -1,0 +1,31 @@
+# Игнорирование виртуальной среды Python
+venv/
+.venv/
+
+
+# Игнорирование файлов с окружением
+.env
+docker-compose.yml
+
+# Игнорирование скомпилированных файлов Python
+__pycache__/
+**/__pycache__/
+
+# Игнорирование настроек проекта для PyCharm
+.ideas/
+**/.ideas/
+*2*.*
+*1*.*
+*old*.*
+migration/
+**/migration/
+logs/
+versions/
+**/versions/
+
+Scripts/
+**/Scripts/
+Lib/
+**/Lib/
+Include/
+**/Include/
