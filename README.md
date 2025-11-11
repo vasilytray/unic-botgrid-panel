@@ -331,7 +331,8 @@ REFRESH_TOKEN_EXPIRE_DAYS
             ├── billing_tasks.py # Биллинг операции
             ├── deployment_tasks.py # Деплой сервисов
             ├── monitoring_tasks.py # Мониторинг
-            └── ai_tasks.py    # AI-агенты
+            ├── ai_tasks.py    # AI-агенты
+            └── user_tasks.py
 ```
 
 ### 2. 🔧 ИЗМЕНЕНИЯ В СУЩЕСТВУЮЩИХ ФАЙЛАХ
@@ -448,8 +449,8 @@ def process_payment_task(payment_id: int):
 
 1. **ЗАВИСИМОСТИ** - добавить в `requirements.txt`:
 ```
-celery==5.3.4
-redis==5.0.1
+celery==5.5.3
+redis==7.0.1
 flower==2.0.1  # для мониторинга
 ```
 
