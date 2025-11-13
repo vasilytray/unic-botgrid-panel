@@ -266,14 +266,60 @@ class TicketDAO(BaseDAO):
     async def can_access_ticket(cls, ticket_id: int, user: 'User') -> bool:
         """Проверяет права доступа пользователя к тикету"""
         from app.roles.models import RoleTypes
+        from app.tickets.models import Ticket
         
         # Админы/модераторы имеют доступ ко всем тикетам
         if user.role_id in [RoleTypes.MODERATOR, RoleTypes.ADMIN, RoleTypes.SUPER_ADMIN]:
             return True
         
         # Обычные пользователи - только к своим тикетам
-        ticket = await cls.find_one_or_none_by_id(ticket_id)
-        return ticket and ticket.user_id == user.id
+        ticket: Ticket | None = await cls.find_one_or_none_by_id(ticket_id)
+        return ticket is not None and ticket.user_id == user.id
+    
+    @classmethod
+    async def get_ticket(cls, ticket_id: int) -> Ticket | None:
+        """Получить тикет по ID"""
+        from app.tickets.models import Ticket
+        result: Ticket | None = await cls.find_one_or_none_by_id(ticket_id)
+        return result
+
+    @classmethod
+    async def auto_close_resolved(cls):
+        """Автоматическое закрытие решенных тикетов"""
+        async with async_session_maker() as session:
+            try:
+                # Находим тикеты, которые были решены более 7 дней назад
+                from datetime import datetime, timedelta
+                from sqlalchemy import update
+                
+                cutoff_date = datetime.now() - timedelta(days=7)
+                
+                stmt = update(Ticket).where(
+                    Ticket.status == TicketStatus.IN_PROGRESS,
+                    Ticket.updated_at < cutoff_date
+                ).values(status=TicketStatus.CLOSED)
+                
+                result = await session.execute(stmt)
+                await session.commit()
+                
+                closed_count = result.rowcount
+                return closed_count
+                
+            except Exception as e:
+                await session.rollback()
+                raise e
+
+    @classmethod
+    async def get_ticket_with_user(cls, ticket_id: int):
+        """Получить тикет с информацией о пользователе"""
+        async with async_session_maker() as session:
+            query = (
+                select(Ticket)
+                .options(joinedload(Ticket.user))
+                .where(Ticket.id == ticket_id)
+            )
+            result = await session.execute(query)
+            return result.unique().scalar_one_or_none()
 
 class TicketMessageDAO(BaseDAO):
     model = TicketMessage

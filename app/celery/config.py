@@ -18,11 +18,19 @@ class CeleryConfig:
     # Периодические задачи (Beat)
     beat_schedule = {
         'cleanup-old-logs': {
-            'task': 'app.celery.tasks.monitoring_tasks.cleanup_old_logs',
+            'task': 'app.celery.tasks.monitoring_tasks.cleanup_old_logs_task',
             'schedule': 86400.0,  # каждые 24 часа
         },
-        'check-services-health': {
-            'task': 'app.celery.tasks.monitoring_tasks.check_services_health',
+        'cleanup-expired-verification-codes': {
+            'task': 'app.celery.tasks.user_tasks.cleanup_expired_verification_codes',
+            'schedule': 3600.0,  # каждые 1 час
+        },
+        'check-ticket-auto-close': {
+            'task': 'app.celery.tasks.ticket_tasks.auto_close_resolved_tickets',
+            'schedule': 7200.0,  # каждые 2 часа
+        },
+        'health-check': {
+            'task': 'app.celery.tasks.monitoring_tasks.health_check',
             'schedule': 300.0,  # каждые 5 минут
         },
         'process-pending-payments': {

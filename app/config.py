@@ -11,8 +11,20 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str
 
+     # Celery
+    CELERY_BROKER_URL: str
+    CELERY_RESULT_BACKEND: str
+    
+    # Redis (для Celery и кэширования)
+    REDIS_URL: str
+    REDIS_PASSWORD: str
+    REDIS_DB: int
+    REDIS_USER: str
+    REDIS_USER_PASSWORD: str
+
     model_config = SettingsConfigDict(
-        env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env")
+        env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env"),
+        extra='ignore'  # ← ИГНОРИРОВАТЬ ЛИШНИЕ ПЕРЕМЕННЫЕ
     )
 
 

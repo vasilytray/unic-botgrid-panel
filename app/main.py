@@ -24,7 +24,7 @@ from app.billing.models import Invoice, Transaction
 # Импортируем роутеры
 from app.students.router import router as router_students
 from app.majors.router import router as router_majors
-
+from app.celery.worker import celery_app
 from app.users.router import router as router_users
 from app.roles.router import router as router_roles
 from app.pages.router import router as router_pages
@@ -59,6 +59,8 @@ async def startup():
     print(f"✅ Зарегистрировано таблиц: {len(tables)}")
     
     print("✅ Приложение успешно запущено")
+    # инициализация Celery
+    celery_app.conf.update(app.state.settings.dict())
 
 async def shutdown():
     """Код, выполняемый при остановке приложения"""
