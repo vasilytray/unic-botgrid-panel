@@ -572,7 +572,7 @@ docker compose down redis
 docker compose up -d redis
 
 # Проверка аутентификации
-docker compose exec redis redis-cli -a GenKo34645-56EpiK ping
+docker compose exec redis redis-cli -a _you_default_redis_pass_ ping
 # Должен вернуть: PONG
 
 # Проверка без пароля (должен отказать)
