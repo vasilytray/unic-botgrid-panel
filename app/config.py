@@ -10,12 +10,8 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     SECRET_KEY: str
     ALGORITHM: str
-
-     # Celery
-    CELERY_BROKER_URL: str
-    CELERY_RESULT_BACKEND: str
-    
-    # Redis (для Celery и кэширования)
+   
+    # Redis (для кэширования)
     REDIS_URL: str
     REDIS_PASSWORD: str
     REDIS_DB: int

@@ -1,0 +1,10 @@
+{
+  "token_hmac_secret_key": "${CENTRIFUGO_SECRET_KEY}",
+  "api_key": "${CENTRIFUGO_API_KEY}",
+  "admin_password": "${CENTRIFUGO_ADMIN_PASSWORD}",
+  "admin_secret": "${CENTRIFUGO_ADMIN_SECRET}",
+  "admin": true,
+  "allow_subscribe_for_client": true,
+  "history_size": 100,
+  "history_ttl": "300s"
+}

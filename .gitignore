@@ -5,6 +5,7 @@ venv/
 
 # Игнорирование файлов с окружением
 .env
+.env*
 docker-compose.yml
 *_my.*
 

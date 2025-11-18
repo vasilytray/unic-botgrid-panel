@@ -1,4 +1,6 @@
 <!-- app/templates/partials/admin_ticket_request.html -->
+<link rel="stylesheet" href="/static/style/ticket.css">
+
 <div class="ticket-management-container">
     <div class="content-header">
         <h1>Управление обращением</h1>
@@ -205,7 +207,7 @@
     margin-left: 8px;
 }
 
-.message-item.staff-message {
+/* .message-item.staff-message {
     border-left: 4px solid #007bff;
     background: #f0f8ff;
 }
@@ -213,7 +215,7 @@
 .message-item.staff-message.tech-support {
     border-left: 4px solid #dc3545;
     background: #fff0f0;
-}
+} */
 
 .message-sender.staff {
     color: #007bff;
@@ -414,11 +416,11 @@
     border-left: 4px solid #007bff;
     background: #f0f8ff;
 }
-
+/* 
 .message-item.user-message {
     border-left: 4px solid #28a745;
     background: #f8fff8;
-}
+} */
 
 .message-header {
     display: flex;
@@ -481,6 +483,7 @@
 .message-item.staff-message {
     border-left: 4px solid #007bff;
     background: #f0f8ff;
+    margin-left: auto;
 }
 
 .message-sender.staff {
@@ -489,8 +492,9 @@
 }
 
 .message-item.user-message {
-    border-left: 4px solid #28a745;
+    border-right: 4px solid #28a745;
     background: #f8fff8;
+    margin-left: unset;
 }
 
 .message-sender.user {
