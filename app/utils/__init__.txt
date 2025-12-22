@@ -1,0 +1,28 @@
+# app/utils/__init__.py
+"""
+Вспомогательные утилиты
+"""
+
+from app.utils.logging import setup_logging, get_logger, app_logger
+from app.utils.datetime_utils import (
+    now_utc,
+    format_datetime,
+    parse_datetime,
+    get_time_ago
+)
+from app.utils.phone_parser import parse_phone_number, validate_phone
+from app.utils.secutils import generate_secure_string, hash_data
+
+__all__ = [
+    # Logging
+    "setup_logging", "get_logger", "app_logger",
+    
+    # DateTime
+    "now_utc", "format_datetime", "parse_datetime", "get_time_ago",
+    
+    # Phone
+    "parse_phone_number", "validate_phone",
+    
+    # Security
+    "generate_secure_string", "hash_data"
+]

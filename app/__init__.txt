@@ -1,0 +1,24 @@
+# Main pack
+# app/__init__.py
+"""
+Docker Hosting Panel - Микросервисная панель управления контейнерами
+"""
+
+__version__ = "0.1.2"
+__author__ = "Vasily Sankov"
+__description__ = "Панель управления Docker контейнерами с AI-агентами и ботами"
+
+# Импорты для удобного доступа из корня пакета
+from app.core.config import get_settings, Settings
+from app.core.database import database_manager
+from app.core.redis import redis_manager
+
+# Можно добавить main app instance если нужно
+# from app.main import app
+
+__all__ = [
+    "get_settings",
+    "Settings", 
+    "database_manager",
+    "redis_manager",
+]

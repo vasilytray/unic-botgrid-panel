@@ -1,3 +1,9 @@
 {
-    "python.analysis.typeCheckingMode": "basic"
+    "python.analysis.extraPaths": ["./app"],
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "jupyter.askForKernelRestart": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.mypyEnabled": true
 }

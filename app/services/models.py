@@ -4,7 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from enum import Enum
 from typing import List, Optional, Dict, Any
 
-from app.database import Base, int_pk, created_at, updated_at, datetime_null_true, bool_default_false, int_default_zero, float_default_zero
+from app.core.database import Base, int_pk, created_at, updated_at, datetime_null_true, bool_default_false, int_default_zero, float_default_zero
 from app.users.models import User
 
 class ServiceType(str, Enum):

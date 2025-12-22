@@ -1,0 +1,19 @@
+# app/dao/__init__.py
+"""
+Data Access Objects (DAO) - слой доступа к данным
+"""
+
+from app.dao.base import BaseDAO
+from app.dao.users import UserDAO
+from app.dao.roles import RoleDAO
+from app.dao.tickets import TicketDAO
+from app.dao.redis_dao import RedisDAO, redis_dao
+
+__all__ = [
+    "BaseDAO",
+    "UserDAO",
+    "RoleDAO", 
+    "TicketDAO",
+    "RedisDAO",
+    "redis_dao"
+]

@@ -1,0 +1,6 @@
+# app/api/__init__.py
+"""
+API endpoints package
+"""
+
+__all__ = ["v1"]  # Экспортируем только v1 subpackage

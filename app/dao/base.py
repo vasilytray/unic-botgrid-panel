@@ -2,7 +2,7 @@
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.future import select
 from sqlalchemy import update as sqlalchemy_update, delete as sqlalchemy_delete, func
-from app.database import async_session_maker
+from app.core.database import async_session_maker
 from app.utils.datetime_utils import DateTimeUtils
 from datetime import datetime
 
@@ -21,7 +21,7 @@ class BaseDAO:
         Возвращает:
             Экземпляр модели или None, если ничего не найдено.
         """
-        async with async_session_maker() as session:
+        async with await cls.get_session() as session:
             query = select(cls.model).filter_by(id=data_id)
             result = await session.execute(query)
             return result.scalar_one_or_none()

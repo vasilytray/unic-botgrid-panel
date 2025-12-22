@@ -1,0 +1,15 @@
+# app/services/__init__.py
+"""
+Бизнес-логика и сервисный слой
+"""
+
+from app.services.user_service import UserService
+from app.services.centrifugo_service import CentrifugoService, centrifugo_service
+from app.services.cache_service import CacheService
+
+__all__ = [
+    "UserService",
+    "CentrifugoService", 
+    "centrifugo_service",
+    "CacheService"
+]

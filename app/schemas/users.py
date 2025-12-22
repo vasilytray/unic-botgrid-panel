@@ -1,13 +1,11 @@
+# app/schemas/users.py
 from datetime import datetime
 from typing import Optional, List
 import re
 from pydantic import BaseModel, Field, EmailStr, field_validator, ValidationError, ConfigDict, model_validator
 from app.utils.phone_parser import PhoneParser
 
-
-# class SUser(BaseModel):
-#     model_config = ConfigDict(from_attributes=True)
-# Базовая схема пользователя
+# Схемы для пользователей
 class SUserBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -16,15 +14,12 @@ class SUserBase(BaseModel):
     first_name: str = Field(..., min_length=3, max_length=50, description="Имя пользователя, от 3 до 50 символов")
     last_name: str = Field(..., min_length=3, max_length=50, description="Фамилия пользователя, от 3 до 50 символов")
     user_nick: Optional[str] = Field(..., min_length=3, max_length=50, description="Ник пользователя, от 3 до 50 символов")
-    # user_pass: str = Field(..., min_length=5, max_length=50, description="Пароль пользователя, от 5 до 50 символов")
     user_email: EmailStr = Field(..., description="Электронная почта пользователя")
     two_fa_auth: int = Field(0, ge=0, le=1)
     email_verified: int = Field(0, ge=0, le=1)
     phone_verified: int = Field(0, ge=0, le=1)
     user_status: Optional[int] = Field(None, ge=0, description="юридический статус пользователя")
-
     role_id: int = Field(..., ge=1, description="ID роли пользователя")
-    role: Optional[str] = Field(..., description="Название роли")
     tg_chat_id: Optional[str] = Field(None, max_length=25, description="ID telegram_chata не более 25 символов")
     special_notes: Optional[str] = Field(None, max_length=500, description="Дополнительные заметки, не более 500 символов")
     created_at: Optional[datetime] = None
@@ -50,8 +45,8 @@ class SUserBase(BaseModel):
         if not re.match(r'^\+\d{10,11}$', value):
             raise ValueError('Номер телефона должен начинаться с "+" и содержать от 10 до 11 цифр')
         return value
-    
-# Схема для роли
+
+# Схема для роли (импортируем из roles.py)
 class RoleResponse(BaseModel):
     id: int
     role_name: str
@@ -125,7 +120,6 @@ class SUserAdd(BaseModel):
     user_email: EmailStr = Field(..., description="Электронная почта пользователя")
     two_fa_auth: int = Field(0, ge=0, le=1)
     role_id: int = Field(4, ge=1, description="ID роли пользователя")
-
     special_notes: Optional[str] = Field(None, max_length=500, description="Дополнительные заметки, не более 500 символов")
 
     @model_validator(mode='before')
@@ -359,7 +353,3 @@ class SUserRemoveIP(BaseModel):
 
 class SUserIPRestriction(BaseModel):
     ip_addresses: List[SUserAllowedIPBase] = Field(..., description="Список IP адресов")
-
-# class SUserSecuritySettings(BaseModel):
-#     enable_ip_restriction: bool = Field(False, description="Включить ограничение по IP")
-#     require_2fa_for_new_ip: bool = Field(False, description="Требовать 2FA для входа с нового IP")

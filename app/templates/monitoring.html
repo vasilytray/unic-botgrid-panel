@@ -1,0 +1,11 @@
+<!-- app/templates/monitoring.html -->
+<div class="monitoring-dashboard">
+    <h2>FastStream Workers Monitoring</h2>
+    <div class="workers-status">
+        <div class="worker" v-for="worker in workers" :key="worker.name">
+            <span class="worker-name">{{ worker.name }}</span>
+            <span class="status" :class="worker.status">{{ worker.status }}</span>
+            <span class="last-seen">{{ worker.last_seen }}</span>
+        </div>
+    </div>
+</div>

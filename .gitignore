@@ -6,6 +6,7 @@ venv/
 # Игнорирование файлов с окружением
 .env
 .env*
+*env.*
 docker-compose.yml
 *_my.*
 
@@ -16,6 +17,7 @@ __pycache__/
 # Игнорирование настроек проекта для PyCharm
 .ideas/
 **/.ideas/
+
 *2*.*
 *1*.*
 *old*.*

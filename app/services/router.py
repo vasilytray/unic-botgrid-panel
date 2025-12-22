@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 
-from app.database import async_session_maker
+from app.core.database import async_session_maker
 from app.services.models import Service, ServiceType, ServiceStatus, BillingPlan
 from app.services.schemas import (
     ServiceCreate, ServiceResponse, ServiceUpdate, 
